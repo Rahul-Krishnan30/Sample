@@ -61,7 +61,7 @@ class Login extends Component {
     render() {
         return (
             <>
-                <SafeAreaView style={[commonCss.fullFlex, { backgroundColor: "#EF0D33" }]}>
+                <SafeAreaView style={[commonCss.fullFlex, commonCss.bgColor]}>
                     <ScrollView style={[commonCss.fullFlex, { backgroundColor: "#FFFFFF" }]} showsVerticalScrollIndicator={false}>
                         <KeyboardAwareScrollView
                             enableOnAndroid={true}
