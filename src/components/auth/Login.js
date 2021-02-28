@@ -46,6 +46,12 @@ class Login extends Component {
         } else {
             await AsyncStorage.setItem('userName', this.state.userName)
             this.props.navigation.navigate('Home', { user: this.state.userName })
+            this.textInput.clear()
+            this.secondTextInput.clear()
+            this.setState({
+                userName: "",
+                password: ""
+            })
         }
     };
 
@@ -80,7 +86,7 @@ class Login extends Component {
                                     </View>
                                     <View style={loginCss.feildContainer}>
                                         <View>
-                                            <View style={loginCss.emailPhoneContainer}>
+                                            <View style={loginCss.userNameContainer}>
                                                 <TextInput placeholder="Enter Username" ref={(input) => { this.textInput = input }}
                                                     onSubmitEditing={() => { this.secondTextInput.focus() }} returnKeyType="next"
                                                     style={loginCss.labelValueText} onChangeText={(value) => { this.feildInputChange(value, "userName") }} />

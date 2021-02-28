@@ -34,7 +34,7 @@ export default StyleSheet.create({
     feildContainer: {
         marginTop: RFValue(39),
     },
-    emailPhoneContainer: {
+    userNameContainer: {
         borderWidth: RFValue(1),
         borderRadius: RFValue(5),
         height: RFValue(48),
