@@ -1,15 +1,13 @@
 import React, { Component } from 'react';
 import { View, Text, BackHandler, ToastAndroid, SafeAreaView, ScrollView, TextInput, TouchableOpacity, Image } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { RFValue } from 'react-native-responsive-fontsize';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 //css load
 import commonCss from '../../assets/css/commonCss';
 import loginCss from '../../assets/css/loginCss';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 let backPressed = 0;
-
 class Login extends Component {
     constructor(props) {
         super(props);
@@ -21,39 +19,35 @@ class Login extends Component {
     }
 
     //for android back button press to exit app
-    // handleBackButton() {
-    //     if (backPressed > 0) {
-    //         BackHandler.exitApp();
-    //         backPressed = 0;
-    //     } else {
-    //         backPressed++;
-    //         ToastAndroid.show("Press Again To Exit", ToastAndroid.SHORT);
-    //         setTimeout(() => { backPressed = 0 }, 2000);
-    //         return true;
-    //     }
-    // }
-
-    async componentDidMount() {
-        // BackHandler.addEventListener('hardwareBackPress', this.handleBackButton.bind(this));
-        // let token = await AsyncStorage.getItem('userToken')
-        // if (token) {
-        //     // this.props.navigation.navigate('App', { screen: 'Home' });
-        // }
+    handleBackButton() {
+        if (backPressed > 0) {
+            BackHandler.exitApp();
+            backPressed = 0;
+        } else {
+            backPressed++;
+            ToastAndroid.show("Press Again To Exit", ToastAndroid.SHORT);
+            setTimeout(() => { backPressed = 0 }, 2000);
+            return true;
+        }
     }
 
-    login = () => {
+    async componentDidMount() {
+        BackHandler.addEventListener('hardwareBackPress', this.handleBackButton.bind(this));
+    }
+
+    login = async () => {
         //login function 
         if (this.state.userName.trim() === "") {
             alert("Please enter user name")
         } else if (this.state.password.trim() === "") {
             alert("Please enter password")
+        } else if (this.state.password.trim().length < 8) {
+            alert("Password must have minimum 8 characters")
         } else {
+            await AsyncStorage.setItem('userName', this.state.userName)
             this.props.navigation.navigate('Home', { user: this.state.userName })
         }
     };
-
-
-
 
     feildInputChange = (value, feildName) => {
         //feild value changing
@@ -87,13 +81,16 @@ class Login extends Component {
                                     <View style={loginCss.feildContainer}>
                                         <View>
                                             <View style={loginCss.emailPhoneContainer}>
-                                                <TextInput placeholder="Enter Username" ref={(input) => { this.textInput = input }} onSubmitEditing={() => { this.secondTextInput.focus() }} returnKeyType="next" style={loginCss.labelValueText} onChangeText={(value) => { this.feildInputChange(value, "userName") }} />
+                                                <TextInput placeholder="Enter Username" ref={(input) => { this.textInput = input }}
+                                                    onSubmitEditing={() => { this.secondTextInput.focus() }} returnKeyType="next"
+                                                    style={loginCss.labelValueText} onChangeText={(value) => { this.feildInputChange(value, "userName") }} />
                                             </View>
                                         </View>
                                         <View style={[loginCss.feildSubContainer, loginCss.feildSubContainerExtra]}>
                                             <View style={loginCss.passwordFeildContainer}>
                                                 <TextInput placeholder="Enter Password" ref={(input) => { this.secondTextInput = input }} secureTextEntry={true}
-                                                    style={[loginCss.feildInput, { width: RFValue(250), fontSize: RFValue(14) }]} onChangeText={(value) => { this.feildInputChange(value, "password") }} />
+                                                    style={[loginCss.feildInput, loginCss.passwordFeildValue]}
+                                                    onChangeText={(value) => { this.feildInputChange(value, "password") }} />
                                             </View>
                                         </View>
                                     </View>
@@ -101,12 +98,6 @@ class Login extends Component {
                                         <TouchableOpacity style={loginCss.signInBtn} onPress={() => this.login()}>
                                             <Text style={[loginCss.signInText,]}>LOGIN</Text>
                                         </TouchableOpacity>
-                                    </View>
-                                    <View style={loginCss.orContainer}>
-                                    </View>
-                                    <View style={loginCss.otherSignInMainContainer}>
-                                        <View style={loginCss.otherSignInSubContainer}>
-                                        </View>
                                     </View>
                                 </View>
                             </View>

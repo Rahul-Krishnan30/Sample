@@ -1,6 +1,6 @@
 import { StyleSheet, Dimensions } from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
-const { width, height } = Dimensions.get("window");
+const { width } = Dimensions.get("window");
 
 export default StyleSheet.create({
     logoImg: {

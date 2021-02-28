@@ -1,5 +1,5 @@
 import { StyleSheet, Dimensions } from 'react-native';
-const { width, height } = Dimensions.get("window");
+const { width } = Dimensions.get("window");
 
 export default StyleSheet.create({
     fullFlex: {
@@ -11,5 +11,10 @@ export default StyleSheet.create({
     splashImg: {
         width: width / 2,
         height: width / 2
+    },
+    splashImgContainer: {
+        flex: 1,
+        alignItems: "center",
+        justifyContent: "center"
     }
 });
